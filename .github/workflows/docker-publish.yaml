@@ -21,8 +21,9 @@ jobs:
     - name: Set Docker image name
       id: set-image-name
       run: |
-        REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-        echo "APP_NAME=${{ secrets.DOCKER_HUB_USER }}/${REPO_NAME}" >> $GITHUB_OUTPUT
+        OWNER_AND_REPO=${{ github.repository }}
+        REPO_NAME=$(echo "$OWNER_AND_REPO" | cut -d'/' -f2)
+        echo "IMAGE_NAME=${{ secrets.DOCKER_HUB_USER }}/${REPO_NAME}" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
