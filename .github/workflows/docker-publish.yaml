@@ -2,16 +2,13 @@ name: Docker Build and Push
 
 on:
   workflow_call:
-    outputs:
-      image:
-        description: 'Image name and tag published.'
-        value: ${{ jobs.docker.outputs.image }}
-
+    inputs:
+      image-name:
+        required: true
+        type: string
+  
 jobs:
   docker:
-    outputs:
-      image: ${{ steps.set-image-name.outputs.IMAGE_NAME }}
-
     runs-on: ubuntu-latest
 
     steps:
@@ -26,17 +23,10 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USER }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-    - name: Set Docker image name
-      id: set-image-name
-      run: |
-        OWNER_AND_REPO=${{ github.repository }}
-        REPO_NAME=$(echo "$OWNER_AND_REPO" | cut -d'/' -f2)
-        echo "IMAGE_NAME=${{ secrets.DOCKER_HUB_USER }}/${REPO_NAME}" >> $GITHUB_OUTPUT
-
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
       with:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.set-image-name.outputs.IMAGE_NAME }}:${{ github.ref_name }}-${{ github.sha }}
+        tags: ${{ inputs.image-name }}
