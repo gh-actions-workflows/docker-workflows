@@ -2,6 +2,9 @@ name: Docker Build and Push
 on:
   workflow_call:
     inputs:
+      app_name:
+        type: string
+        required: true
       docker_hub_user:
         type: string
         required: true
@@ -37,7 +40,7 @@ jobs:
     - name: Set Docker image name
       id: set_image_name
       run: |
-        echo "IMAGE_NAME=${{ inputs.docker_hub_user }}/${{ vars.APP_NAME }}:${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        echo "IMAGE_NAME=${{ inputs.docker_hub_user }}/${{ inputs.app_name }}:${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
