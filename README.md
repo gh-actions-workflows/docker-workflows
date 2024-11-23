@@ -1,8 +1,8 @@
 # Docker Workflow
 
-Construa a sua imagem Docker e publique-a no DockerHub.
+Build your Docker image and publish it to DockerHub.
 
-## Como utilizar?
+## How to use?
 
 ```yaml
 name: Publish Docker Image
@@ -11,9 +11,9 @@ on: [push]
 jobs:
     publish:
       uses: gh-actions-workflows/docker-workflows/.github/workflows/docker-publish.yaml@master
-      if: ${{ github.ref_name == 'master' || github.ref_name == 'develop'}} # Opcional
+      if: ${{ github.ref_name == 'master' || github.ref_name == 'develop'}} # Optional
       with:
-        app_name: app-name # O nome da aplicação será usado para nomear a imagem
+        app_name: app-name # The application name will be used to name the image
         docker_hub_user: ${{ vars.DOCKER_HUB_USER }}
       secrets:
         docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -21,11 +21,11 @@ jobs:
 
 ## Outputs
 
-* **image_name**: nome e tag da imagem publicada.
+* **image_name**: name and tag of the published image.
 
-## Observações
+## Notes
 
-* O nome da imagem seguirá o seguinte padrão **DOCKER_HUB_USER/APP_NAME**. É necessário colocar o usuário no início do nome para fazer a publicação no DockerHub.
-* A tag da imagem seguirá o seguinte padrão: **BRANCH_NAME-COMMIT_SHA**. O nome da branch em que o workflow está sendo executado (e.g. develop, release, master), e o sha do útimo commit.
+* The image name will follow the following pattern **DOCKER_HUB_USER/APP_NAME**. You must put the user at the beginning of the name to publish to DockerHub.
+* The image tag will follow the following pattern: **BRANCH_NAME-COMMIT_SHA**. The name of the branch in which the workflow is being executed (e.g. develop, release, master), and the sha of the last commit.
 
-Para mais detalhes sobre o funcionamento consulte o arquivo: [docker-publish.yaml](https://github.com/gh-actions-workflows/docker-workflows/blob/master/.github/workflows/docker-publish.yaml).
+For more details on how it works, see the file: [docker-publish.yaml](https://github.com/gh-actions-workflows/docker-workflows/blob/master/.github/workflows/docker-publish.yaml).
